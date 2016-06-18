@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-import sys,os
+import sys
 incr=0
 
 def display(s = ""):
@@ -35,11 +35,17 @@ def bf_end():
     decrement()
 
 def bf_read():
-    display("mem[i]=args[c]")
+    display("mem[i]=ord(args[c]) if c>=0 and len(args)>c else 0")
     display("c+=1")
 
 def bf_print():
     display("print(chr(mem[i]),end='')")
+
+def bf_debug():
+    display("if d:")
+    increment()
+    display("print(\"pointer at \"+str(i)+\" with value '\"+chr(mem[i])+\"' = \"+str(mem[i])+\".\")")
+    decrement()
 
 translator = {
         '>':bf_move_right,
@@ -50,6 +56,7 @@ translator = {
         ']':bf_end,
         ',':bf_read,
         '.':bf_print,
+        '#':bf_debug,
         }
 
 def treat(c):
@@ -59,7 +66,15 @@ def treat(c):
         return 0
 
 def init(ms=0):
-    display("#!/usr/bin/python3\nms="+str(ms)+"\nmem=[0 for i in range(ms)]\ni=0")
+    display("#!/usr/bin/python3\n"
+            +"import sys\n"
+            +"ms="+str(ms)+"\n"
+            +"mem=[0 for i in range(ms)]\n"
+            +"i=0\n"
+            +"c=0\n"
+            +"d=1\n"
+            +"args=sys.argv[1] if len(sys.argv)>1 else ''\n"
+            )
 
 if __name__=='__main__':
     filename=sys.argv[1]
